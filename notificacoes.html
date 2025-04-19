@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPTV ERP - Notificações</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar {
+            background-color: #2c3e50;
+            color: white;
+            width: 250px;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            background-color: #1a2530;
+            text-align: center;
+        }
+        
+        .sidebar-header h3 {
+            color: white;
+            margin: 0;
+        }
+        
+        .sidebar-header span {
+            color: #3498db;
+        }
+        
+        .sidebar-menu {
+            padding: 0;
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            padding: 15px 20px;
+            border-bottom: 1px solid #3d5166;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu li:hover {
+            background-color: #3d5166;
+            cursor: pointer;
+        }
+        
+        .sidebar-menu li.active {
+            background-color: #3498db;
+        }
+        
+        .sidebar-menu i {
+            margin-right: 10px;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        .header {
+            background-color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .notification-filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .filter-btn.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .notification-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .notification-type {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .type-5dias {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .type-3dias {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .type-1dia {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .type-vencimento {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .notification-time {
+            color: #95a5a6;
+            font-size: 14px;
+        }
+        
+        .notification-client {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .notification-message {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .notification-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid #ecf0f1;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-enviado {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .status-entregue {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .status-lido {
+            background-color: #9b59b6;
+            color: white;
+        }
+        
+        .status-falha {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .notification-actions button {
+            background: none;
+            border: none;
+            color: #3498db;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .notification-actions button:hover {
+            text-decoration: underline;
+        }
+        
+        .load-more {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        
+        .load-more:hover {
+            background-color: #f5f5f5;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+                padding: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .toggle-btn {
+                display: block;
+            }
+            
+            .sidebar.active {
+                width: 250px;
+                padding: initial;
+            }
+            
+            .notification-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .notification-time {
+                margin-top: 5px;
+            }
+            
+            .notification-status {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .notification-actions {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>IPTV<span>ERP</span></h3>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li onclick="window.location.href='dashboard.html'">Dashboard</li>
+                <li>Revendedores</li>
+                <li onclick="window.location.href='clientes.html'">Clientes</li>
+                <li class="active">Notificações</li>
+                <li>Financeiro</li>
+                <li>Relatórios</li>
+                <li>Configurações</li>
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <div class="header">
+                <button class="toggle-btn">☰</button>
+                <div class="user-info">
+                    <img src="https://via.placeholder.com/40" alt="User">
+                    <span>Administrador</span>
+                </div>
+            </div>
+            
+            <div class="page-header">
+                <h2>Notificações WhatsApp</h2>
+            </div>
+            
+            <div class="notification-filters">
+                <button class="filter-btn active">Todas</button>
+                <button class="filter-btn">5 dias antes</button>
+                <button class="filter-btn">3 dias antes</button>
+                <button class="filter-btn">1 dia antes</button>
+                <button class="filter-btn">Dia do vencimento</button>
+                <button class="filter-btn">Após vencimento</button>
+            </div>
+            
+            <div class="notification-card">
+                <div class="notification-header">
+                    <span class="notification-type type-5dias">5 dias antes</span>
+                    <span class="notification-time">Hoje, 14:30</span>
+                </div>
+                <div class="notification-client">João Silva</div>
+                <div class="notification-message">
+                    "Olá João, seu acesso IPTV vence em 5 dias (24/04/2025). Clique no link para renovar e garantir acesso ininterrupto: https://pagamento.com/abc123"
+                </div>
+                <div class="notification-status">
+                    <span class="status-badge status-entregue">Entregue</span>
+                    <div class="notification-actions">
+                        <button>Reenviar</button>
+                        <button>Detalhes</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="notification-card">
+                <div class="notification-header">
+                    <span class="notification-type type-3dias">3 dias antes</span>
+                    <span class="notification-time">Hoje, 14:15</span>
+                </div>
+                <div class="notification-client">Maria Oliveira</div>
+                <div class="notification-message">
+                    "Olá Maria, seu acesso IPTV vence em 3 dias (22/04/2025). Clique no link para renovar e garantir acesso ininterrupto: https://pagamento.com/def456"
+                </div>
+                <div class="notification-status">
+                    <span class="status-badge status-lido">Lido</span>
+                    <div class="notification-actions">
+                        <button>Reenviar</button>
+                        <button>Detalhes</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="notification-card">
+                <div class="notification-header">
+                    <span class="notification-type type-1dia">1 dia antes</span>
+                    <span class="notification-time">Hoje, 14:00</span>
+                </div>
+                <div class="notification-client">Pedro Santos</div>
+                <div class="notification-message">
+                    "Olá Pedro, seu acesso IPTV vence amanhã (20/04/2025). Clique no link para renovar e garantir acesso ininterrupto: https://pagamento.com/ghi789"
+                </div>
+                <div class="notification-status">
+                    <span class="status-badge status-enviado">Enviado</span>
+                    <div class="notification-actions">
+                        <button>Reenviar</button>
+                        <button>Detalhes</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="notification-card">
+                <div class="notification-header">
+                    <span class="notification-type type-vencimento">Dia do vencimento</span>
+                    <span class="notification-time">Hoje, 13:45</span>
+                </div>
+                <div class="notification-client">Ana Souza</div>
+                <div class="notification-message">
+                    "Olá Ana, seu acesso IPTV vence hoje (19/04/2025). Clique no link para renovar e garantir acesso ininterrupto: https://pagamento.com/jkl012"
+                </div>
+                <div class="notification-status">
+                    <span class="status-badge status-falha">Falha</span>
+                    <div class="notification-actions">
+                        <button>Reenviar</button>
+                        <button>Detalhes</button>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="load-more">Carregar mais</button>
+        </div>
+    </div>
+    
+    <script>
+        document.querySelector('.toggle-btn').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+        
+        document.querySelectorAll('.filter-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(function(b) {
+                    b.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

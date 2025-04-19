@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPTV ERP - Revendedores</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar {
+            background-color: #2c3e50;
+            color: white;
+            width: 250px;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            background-color: #1a2530;
+            text-align: center;
+        }
+        
+        .sidebar-header h3 {
+            color: white;
+            margin: 0;
+        }
+        
+        .sidebar-header span {
+            color: #3498db;
+        }
+        
+        .sidebar-menu {
+            padding: 0;
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            padding: 15px 20px;
+            border-bottom: 1px solid #3d5166;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu li:hover {
+            background-color: #3d5166;
+            cursor: pointer;
+        }
+        
+        .sidebar-menu li.active {
+            background-color: #3498db;
+        }
+        
+        .sidebar-menu i {
+            margin-right: 10px;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        .header {
+            background-color: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 20px;
+            cursor: pointer;
+            display: none;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .search-bar {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            font-size: 16px;
+        }
+        
+        .search-bar button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+        
+        .add-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+        
+        .add-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .resellers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .reseller-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .reseller-header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .reseller-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: white;
+            color: #3498db;
+        }
+        
+        .reseller-body {
+            padding: 20px;
+        }
+        
+        .reseller-info {
+            margin-bottom: 15px;
+        }
+        
+        .reseller-info p {
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .reseller-info p span:first-child {
+            color: #7f8c8d;
+        }
+        
+        .reseller-info p span:last-child {
+            font-weight: 600;
+        }
+        
+        .reseller-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-box {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        
+        .reseller-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        
+        .action-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            flex: 1;
+            margin: 0 5px;
+            text-align: center;
+        }
+        
+        .action-btn.secondary {
+            background-color: #95a5a6;
+        }
+        
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .pagination button {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        .pagination button.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+                padding: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .toggle-btn {
+                display: block;
+            }
+            
+            .sidebar.active {
+                width: 250px;
+                padding: initial;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .add-btn {
+                margin-top: 10px;
+                align-self: flex-end;
+            }
+            
+            .resellers-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>IPTV<span>ERP</span></h3>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li onclick="window.location.href='dashboard.html'">Dashboard</li>
+                <li class="active">Revendedores</li>
+                <li onclick="window.location.href='clientes.html'">Clientes</li>
+                <li onclick="window.location.href='notificacoes.html'">Notificações</li>
+                <li>Financeiro</li>
+                <li>Relatórios</li>
+                <li>Configurações</li>
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <div class="header">
+                <button class="toggle-btn">☰</button>
+                <div class="user-info">
+                    <img src="https://via.placeholder.com/40" alt="User">
+                    <span>Administrador</span>
+                </div>
+            </div>
+            
+            <div class="page-header">
+                <h2>Gerenciamento de Revendedores</h2>
+                <button class="add-btn">+ Adicionar Revendedor</button>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar revendedor...">
+                <button>Buscar</button>
+            </div>
+            
+            <div class="resellers-grid">
+                <div class="reseller-card">
+                    <div class="reseller-header">
+                        <h3>Carlos Vendas</h3>
+                        <span class="reseller-status">Ativo</span>
+                    </div>
+                    <div class="reseller-body">
+                        <div class="reseller-info">
+                            <p><span>Email:</span> <span>carlos@exemplo.com</span></p>
+                            <p><span>Telefone:</span> <span>(11) 98765-4321</span></p>
+                            <p><span>Data Cadastro:</span> <span>10/01/2025</span></p>
+                            <p><span>Créditos:</span> <span>R$ 1.250,00</span></p>
+                        </div>
+                        <div class="reseller-stats">
+                            <div class="stat-box">
+                                <div class="stat-value">42</div>
+                                <div class="stat-label">Clientes</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">R$ 3.780</div>
+                                <div class="stat-label">Vendas (Mês)</div>
+                            </div>
+                        </div>
+                        <div class="reseller-actions">
+                            <button class="action-btn">Adicionar Créditos</button>
+                            <button class="action-btn secondary">Editar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reseller-card">
+                    <div class="reseller-header">
+                        <h3>Ana Distribuidora</h3>
+                        <span class="reseller-status">Ativo</span>
+                    </div>
+                    <div class="reseller-body">
+                        <div class="reseller-info">
+                            <p><span>Email:</span> <span>ana@exemplo.com</span></p>
+                            <p><span>Telefone:</span> <span>(11) 91234-5678</span></p>
+                            <p><span>Data Cadastro:</span> <span>15/02/2025</span></p>
+                            <p><span>Créditos:</span> <span>R$ 850,00</span></p>
+                        </div>
+                        <div class="reseller-stats">
+                            <div class="stat-box">
+                                <div class="stat-value">28</div>
+                                <div class="stat-label">Clientes</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">R$ 2.520</div>
+                                <div class="stat-label">Vendas (Mês)</div>
+                            </div>
+                        </div>
+                        <div class="reseller-actions">
+                            <button class="action-btn">Adicionar Créditos</button>
+                            <button class="action-btn secondary">Editar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reseller-card">
+                    <div class="reseller-header">
+                        <h3>Roberto Revenda</h3>
+                        <span class="reseller-status">Ativo</span>
+                    </div>
+                    <div class="reseller-body">
+                        <div class="reseller-info">
+                            <p><span>Email:</span> <span>roberto@exemplo.com</span></p>
+                            <p><span>Telefone:</span> <span>(11) 97654-3210</span></p>
+                            <p><span>Data Cadastro:</span> <span>05/03/2025</span></p>
+                            <p><span>Créditos:</span> <span>R$ 320,00</span></p>
+                        </div>
+                        <div class="reseller-stats">
+                            <div class="stat-box">
+                                <div class="stat-value">15</div>
+                                <div class="stat-label">Clientes</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">R$ 1.350</div>
+                                <div class="stat-label">Vendas (Mês)</div>
+                            </div>
+                        </div>
+                        <div class="reseller-actions">
+                            <button class="action-btn">Adicionar Créditos</button>
+                            <button class="action-btn secondary">Editar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reseller-card">
+                    <div class="reseller-header">
+                        <h3>Fernanda Tech</h3>
+                        <span class="reseller-status">Ativo</span>
+                    </div>
+                    <div class="reseller-body">
+                        <div class="reseller-info">
+                            <p><span>Email:</span> <span>fernanda@exemplo.com</span></p>
+                            <p><span>Telefone:</span> <span>(11) 98877-6655</span></p>
+                            <p><span>Data Cadastro:</span> <span>20/03/2025</span></p>
+                            <p><span>Créditos:</span> <span>R$ 750,00</span></p>
+                        </div>
+                        <div class="reseller-stats">
+                            <div class="stat-box">
+                                <div class="stat-value">22</div>
+                                <div class="stat-label">Clientes</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">R$ 1.980</div>
+                                <div class="stat-label">Vendas (Mês)</div>
+                            </div>
+                        </div>
+                        <div class="reseller-actions">
+                            <button class="action-btn">Adicionar Créditos</button>
+                            <button class="action-btn secondary">Editar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pagination">
+                <button>Anterior</button>
+                <button class="active">1</button>
+                <button>2</button>
+                <button>Próximo</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.querySelector('.toggle-btn').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

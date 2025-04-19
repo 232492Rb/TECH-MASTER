@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPTV ERP - Protótipo Visual</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            padding: 20px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #2c3e50;
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .header h1 {
+            margin-bottom: 10px;
+        }
+        
+        .header span {
+            color: #3498db;
+        }
+        
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .page-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .page-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .page-image {
+            height: 150px;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .page-content {
+            padding: 20px;
+        }
+        
+        .page-content h3 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .page-content p {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .view-btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .view-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #7f8c8d;
+        }
+        
+        @media (max-width: 600px) {
+            .pages-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>IPTV<span>ERP</span></h1>
+            <p>Protótipo Visual do Sistema de Gestão para IPTV</p>
+        </div>
+        
+        <div class="pages-grid">
+            <div class="page-card">
+                <div class="page-image">
+                    <i>Login</i>
+                </div>
+                <div class="page-content">
+                    <h3>Página de Login</h3>
+                    <p>Tela de autenticação para acesso ao sistema com campos para usuário e senha.</p>
+                    <a href="login_page.html" class="view-btn">Visualizar</a>
+                </div>
+            </div>
+            
+            <div class="page-card">
+                <div class="page-image">
+                    <i>Dashboard</i>
+                </div>
+                <div class="page-content">
+                    <h3>Dashboard Principal</h3>
+                    <p>Painel com visão geral do sistema, métricas e atividades recentes.</p>
+                    <a href="dashboard.html" class="view-btn">Visualizar</a>
+                </div>
+            </div>
+            
+            <div class="page-card">
+                <div class="page-image">
+                    <i>Revendedores</i>
+                </div>
+                <div class="page-content">
+                    <h3>Gestão de Revendedores</h3>
+                    <p>Interface para gerenciamento de revendedores, créditos e comissões.</p>
+                    <a href="revendedores.html" class="view-btn">Visualizar</a>
+                </div>
+            </div>
+            
+            <div class="page-card">
+                <div class="page-image">
+                    <i>Clientes</i>
+                </div>
+                <div class="page-content">
+                    <h3>Gestão de Clientes</h3>
+                    <p>Interface para gerenciamento de clientes finais, planos e vencimentos.</p>
+                    <a href="clientes.html" class="view-btn">Visualizar</a>
+                </div>
+            </div>
+            
+            <div class="page-card">
+                <div class="page-image">
+                    <i>Notificações</i>
+                </div>
+                <div class="page-content">
+                    <h3>Sistema de Notificações</h3>
+                    <p>Interface para gerenciamento de notificações automáticas via WhatsApp.</p>
+                    <a href="notificacoes.html" class="view-btn">Visualizar</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Este é um protótipo visual do SaaS ERP para IPTV. Todas as páginas são responsivas e podem ser visualizadas em dispositivos móveis.</p>
+        </div>
+    </div>
+</body>
+</html>
